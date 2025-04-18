@@ -3,6 +3,7 @@ import 'reflect-metadata';
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { setupSwagger } from './swagger';
 
 // DataSources
 import { centro1DataSource } from './data-source/centro1DataSource';
@@ -42,11 +43,13 @@ async function startServer() {
     app.listen(PORT, () => {
       console.log(`Servidor corriendo en el puerto ${PORT}`);
     });
+    setupSwagger(app);
 
   } catch (error) {
     console.error('Error al iniciar servidor:', error);
     process.exit(1);
   }
+
 }
 
 startServer();
