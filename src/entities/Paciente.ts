@@ -6,14 +6,15 @@ export class Paciente {
     id!: number;
 
     @Column()
-    cedula!: number;
+    cedula!: string;
 
     @Column()
-    nombre!: number;
+    nombre!: string;
 
-    @Column()
-    fechaNacimiento!: Date;
+    @Column({ name: 'fecha_nacimiento' })
+    fechaNacimiento !: Date;
+    
 
-    @Column()
+    @Column({ name: 'centro_medico_id' })
     centroMedicoId!: number;
 }

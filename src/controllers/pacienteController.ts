@@ -4,11 +4,11 @@ import { centro2DataSource } from "../data-source/centro2DataSource";
 import { Paciente } from "../entities/Paciente";
 
 export class PacienteController {
-    
+
     static getRepository = (source?: string, centroMedicoId?: number) => {
-        if (source === "1" || centroMedicoId === 1) {
+        if (source === "2" || centroMedicoId === 2) {
             return centro1DataSource.getRepository(Paciente);
-        } else if (source === "2" || centroMedicoId === 2) {
+        } else if (source === "3" || centroMedicoId === 3) {
             return centro2DataSource.getRepository(Paciente);
         } else {
             throw new Error("Fuente de datos inválida o centro médico no soportado");
@@ -22,7 +22,7 @@ export class PacienteController {
             const pacientes = await repo.find();
             res.json(pacientes);
         } catch (err) {
-            res.status(500).json({ error: 'Error al obtener pacientes' });
+            res.status(500).json({ error: 'Error al obtener pacientes', details: (err as Error).message });
         }
     };
 
@@ -38,7 +38,7 @@ export class PacienteController {
             }
             res.json(paciente);
         } catch (err) {
-            res.status(500).json({ error: 'Error al obtener paciente' });
+            res.status(500).json({ error: 'Error al obtener paciente', details: (err as Error).message });
         }
     };
 
@@ -46,11 +46,18 @@ export class PacienteController {
         const { cedula, nombre, fechaNacimiento, centroMedicoId } = req.body;
         try {
             const repo = PacienteController.getRepository(undefined, centroMedicoId);
-            const paciente = repo.create({ cedula, nombre, fechaNacimiento, centroMedicoId });
+
+            const paciente = repo.create({
+                cedula: String(cedula),
+                nombre: String(nombre),
+                fechaNacimiento: new Date(fechaNacimiento),
+                centroMedicoId,
+            });
+
             const result = await repo.save(paciente);
             res.status(201).json(result);
         } catch (err) {
-            res.status(500).json({ error: 'Error al crear paciente' });
+            res.status(500).json({ error: 'Error al crear paciente', details: (err as Error).message });
         }
     };
 
@@ -60,18 +67,21 @@ export class PacienteController {
         try {
             const repo = PacienteController.getRepository(undefined, centroMedicoId);
             const paciente = await repo.findOneBy({ id: parseInt(id) });
+
             if (!paciente) {
                 res.status(404).json({ error: 'Paciente no encontrado' });
                 return;
             }
-            paciente.cedula = cedula;
-            paciente.nombre = nombre;
-            paciente.fechaNacimiento = fechaNacimiento;
+
+            paciente.cedula = String(cedula);
+            paciente.nombre = String(nombre);
+            paciente.fechaNacimiento = new Date(fechaNacimiento);
             paciente.centroMedicoId = centroMedicoId;
+
             const result = await repo.save(paciente);
             res.json(result);
         } catch (err) {
-            res.status(500).json({ error: 'Error al actualizar paciente' });
+            res.status(500).json({ error: 'Error al actualizar paciente', details: (err as Error).message });
         }
     };
 
@@ -81,15 +91,16 @@ export class PacienteController {
         try {
             const repo = PacienteController.getRepository(source as string);
             const paciente = await repo.findOneBy({ id: parseInt(id) });
+
             if (!paciente) {
                 res.status(404).json({ error: 'Paciente no encontrado' });
                 return;
             }
+
             await repo.remove(paciente);
             res.json({ message: 'Paciente eliminado', data: paciente });
         } catch (err) {
-            res.status(500).json({ error: 'Error al eliminar paciente' });
+            res.status(500).json({ error: 'Error al eliminar paciente', details: (err as Error).message });
         }
     };
 }
-
