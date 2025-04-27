@@ -7,7 +7,7 @@ export class ConsultaMedicaController {
                 res.status(500).json({ error: "Repositorio no configurado" });
                 return;
             }
-            const consultas = await req.repo.find();
+            const consultas = await req.repo.find({relations: ['paciente', 'medico']});
             res.json(consultas);
         } catch (err) {
             console.error("Error en getAll:", err);

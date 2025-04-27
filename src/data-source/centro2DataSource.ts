@@ -4,6 +4,9 @@ import { DataSource } from 'typeorm';
 import dotenv from 'dotenv';
 import { ConsultaMedica } from '../entities/ConsultaMedica';
 import { Paciente } from '../entities/Paciente';
+import { Medico } from '../entities/Medico';
+import { Especialidad } from '../entities/Especialidad';
+import { CentroMedico } from '../entities/CentroMedico';
 
 dotenv.config();
 
@@ -14,6 +17,6 @@ export const centro2DataSource = new DataSource({
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME_CENTRO2,
-  entities: [ConsultaMedica, Paciente],
+  entities: [ConsultaMedica, Paciente, Medico, Especialidad, CentroMedico],
   synchronize: false,
 });
