@@ -2,14 +2,20 @@ import { RequestHandler } from "express";
 import { centro1DataSource } from "../data-source/centro1DataSource";
 import { centro2DataSource } from "../data-source/centro2DataSource";
 import { Paciente } from "../entities/Paciente";
+import { centro3DataSource } from "../data-source/centro3DataSource";
 
 export class PacienteController {
 
     static getRepository = (source?: string, centroMedicoId?: number) => {
+        console.log("source", source);
+        console.log("centroMedicoId", centroMedicoId);
+        
         if (source === "2" || centroMedicoId === 2) {
             return centro1DataSource.getRepository(Paciente);
         } else if (source === "3" || centroMedicoId === 3) {
             return centro2DataSource.getRepository(Paciente);
+        }else if(source === "4" || centroMedicoId ===4){
+            return centro3DataSource.getRepository(Paciente);
         } else {
             throw new Error("Fuente de datos inválida o centro médico no soportado");
         }

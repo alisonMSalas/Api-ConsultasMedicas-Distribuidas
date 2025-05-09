@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { centro1DataSource } from "../data-source/centro1DataSource";
 import { centro2DataSource } from "../data-source/centro2DataSource";
+import{centro3DataSource} from "../data-source/centro3DataSource";
 import { RequestHandler } from "express";
 
 // Extender la interfaz Request para incluir repo
@@ -20,6 +21,8 @@ export function withDataSource(entity: any): RequestHandler {
                 dataSource = centro1DataSource;
             } else if (source === "3" ) {
                 dataSource = centro2DataSource;
+            }else if(source =="4"){
+                dataSource=centro3DataSource;
             } else {
                 res.status(400).json({ error: "Fuente de datos no válida o no especificada" });
                 return;

@@ -8,6 +8,7 @@ import { setupSwagger } from './swagger';
 // DataSources
 import { centro1DataSource } from './data-source/centro1DataSource';
 import { centro2DataSource } from './data-source/centro2DataSource';
+import { centro3DataSource } from './data-source/centro3DataSource';
 import consultaMedicaRouter from './routes/consultaMedicaRoute';
 import pacientesRouters from './routes/pacientesRoutes';
 
@@ -29,6 +30,8 @@ async function startServer() {
 
     await centro2DataSource.initialize();
     console.log('Conexión con base de datos centro2 establecida.');
+    await centro3DataSource.initialize();
+    console.log('Conexión con base de datos centro3 establecida.')
 
     const app = express();
     app.use(cors());
