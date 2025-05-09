@@ -11,6 +11,8 @@ import { centro2DataSource } from './data-source/centro2DataSource';
 import { centro3DataSource } from './data-source/centro3DataSource';
 import consultaMedicaRouter from './routes/consultaMedicaRoute';
 import pacientesRouters from './routes/pacientesRoutes';
+import medicoRoutes from './routes/medicoRoutes';
+import especialidadRoutes from './routes/especialidadRoutes';
 
 declare global {
     namespace Express {
@@ -39,7 +41,9 @@ async function startServer() {
 
     // Rutas
     app.use('/api/paciente', pacientesRouters);
-    app.use('/api/consulta', consultaMedicaRouter);
+    app.use('/api/consulta-medica', consultaMedicaRouter);
+    app.use('/api/medico', medicoRoutes);
+    app.use('/api/especialidad', especialidadRoutes);
 
     // Levantamos el servidor
     const PORT = process.env.PORT || 3002;

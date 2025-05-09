@@ -50,8 +50,9 @@ export class PacienteController {
 
     static create: RequestHandler = async (req, res) => {
         const { cedula, nombre, fechaNacimiento, centroMedicoId } = req.body;
+        const { source } = req.query;
         try {
-            const repo = PacienteController.getRepository(undefined, centroMedicoId);
+            const repo = PacienteController.getRepository(source as string, centroMedicoId);
 
             const paciente = repo.create({
                 cedula: String(cedula),
@@ -70,8 +71,10 @@ export class PacienteController {
     static update: RequestHandler = async (req, res) => {
         const { id } = req.params;
         const { cedula, nombre, fechaNacimiento, centroMedicoId } = req.body;
+        const { source } = req.query;
+        console.log('source en update:', source);
         try {
-            const repo = PacienteController.getRepository(undefined, centroMedicoId);
+            const repo = PacienteController.getRepository(source as string, centroMedicoId);
             const paciente = await repo.findOneBy({ id: parseInt(id) });
 
             if (!paciente) {
